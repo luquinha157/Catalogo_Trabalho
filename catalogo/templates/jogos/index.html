@@ -61,11 +61,11 @@ https://templatemo.com/tm-556-catalog-z
 
     <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="{% static 'assets/img/hero.jpg' %}">
         <form class="d-flex tm-search-form" method="GET" action="{% url 'index' %}">
-            <input class="form-control tm-search-input" type="search" placeholder="Pesquisar" aria-label="Search">
+            <input class="form-control tm-search-input" type="search" name="search" placeholder="Pesquisar" aria-label="Search" value="{{ search_term }}">
             <button class="btn btn-outline-success tm-search-btn" type="submit">
                 <i class="fas fa-search"></i>
             </button>
-        </form>
+        </form>        
     </div>
 
     <div class="container-fluid tm-container-content tm-mt-60">

@@ -7,6 +7,15 @@ from django.core.paginator import Paginator, EmptyPage
 
 def index(request):
     produtos = Jogo.objects.all()
+    
+    # Se houver um termo de pesquisa na solicitação GET
+    search_term = request.GET.get('search', '')
+    
+    # Se houver um termo de pesquisa, filtra os produtos
+    if search_term:
+        produtos = Jogo.objects.filter(nome__icontains=search_term)
+    else:
+        produtos = Jogo.objects.all()
 
     # Número de itens por página
     items_por_pagina = 8  # Altere conforme necessário
