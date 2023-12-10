@@ -9,7 +9,7 @@ def index(request):
     produtos = Jogo.objects.all()
 
     # Número de itens por página
-    items_por_pagina = 10  # Altere conforme necessário
+    items_por_pagina = 8  # Altere conforme necessário
 
     # Obtém o número da página a partir dos parâmetros da solicitação
     page = request.GET.get('page', 1)
