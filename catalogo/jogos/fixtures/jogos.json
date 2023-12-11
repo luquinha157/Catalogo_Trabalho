@@ -1,0 +1,93 @@
+[
+    
+    {
+        "model": "jogos.jogo",
+        "pk": 1,
+        "fields": {
+            "nome": "Hokuto no Ken",
+            "imagem": "media/01.png",
+            "descricao": "Jogo de Luta"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 2,
+        "fields": {
+            "nome": "Sonic the hedgehog",
+            "imagem": "media/02.jpeg",
+            "descricao": "Jogo de plataforma"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 3,
+        "fields": {
+            "nome": "Mortal Kombat 2",
+            "imagem": "media/04.jpeg",
+            "descricao": "Jogo de luta"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 4,
+        "fields": {
+            "nome": "Doom - 1992",
+            "imagem": "media/03.jpg",
+            "descricao": "Jogo de tiro"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 5,
+        "fields": {
+            "nome": "Ninja Gaiden",
+            "imagem": "media/05.jpg",
+            "descricao": "jogo de plataforma"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 6,
+        "fields": {
+            "nome": "Super Metroid",
+            "imagem": "media/06.jpg",
+            "descricao": "Jogo de tiro e plataforma"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 7,
+        "fields": {
+            "nome": "Crusader of Centy",
+            "imagem": "media/07.png",
+            "descricao": "jogo rpg aventura"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 8,
+        "fields": {
+            "nome": "Yu Gi Oh",
+            "imagem": "media/08.jpg",
+            "descricao": "jogo rpg cartas"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 9,
+        "fields": {
+            "nome": "Pokemon Fire Red",
+            "imagem": "media/09.jpg",
+            "descricao": "jogo rpg aventura"
+        }
+    },
+    {
+        "model": "jogos.jogo",
+        "pk": 10,
+        "fields": {
+            "nome": "Castlevania",
+            "imagem": "media/10.jpg",
+            "descricao": "jogo de plataforma"
+        }
+    }
+]
