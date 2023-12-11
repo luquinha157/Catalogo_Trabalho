@@ -1,91 +1,91 @@
 from django import forms
+from django.contrib.auth.models import User
 
 class LoginForms(forms.Form):
-    email=forms.EmailField(
-        label='Email', 
-        required=True, 
-        max_length=100,
-        widget=forms.EmailInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Ex.: jose@django.com',
-            }
-        )
-    )
-    senha=forms.CharField(
-        label='Senha', 
-        required=True, 
-        max_length=70,
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Digite a sua senha',
-            }
-        ),
-    )
-
-class RegisterForms(forms.Form):
-    name=forms.CharField(
-        label='Nome de Cadastro', 
-        required=True, 
-        max_length=100,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Ex.: João Silva',
-            }
-        )
-    )
-    email=forms.EmailField(
+    email = forms.EmailField(
         label='Email',
         required=True,
         max_length=100,
         widget=forms.EmailInput(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'Ex.: joaosilva@xpto.com',
+                'type': "email",
             }
         )
     )
-    password=forms.CharField(
-        label='Senha', 
-        required=True, 
+    senha = forms.CharField(
+        label='Senha',
+        required=True,
         max_length=70,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'Digite a sua senha',
-            }
-        ),
-    )
-    password_confirm=forms.CharField(
-        label='Confirme a sua senha', 
-        required=True, 
-        max_length=70,
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Digite sua senha novamente',
+                'type': 'password',
             }
         ),
     )
 
-    def clean_name_register(self):
-        name = self.cleaned_data.get('name')
 
-        if name:
-            name = name.strip()
-            if ' ' in name:
-                raise forms.ValidationError('Espaços não são permitidos nesse campo')
-            else:
-                return name
+class UserForms(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'custom-input'})),
+    password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'custom-input'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'custom-input'}),
+            'email': forms.TextInput(attrs={'class': 'custom-input'}),
+            'password': forms.PasswordInput(attrs={'class': 'custom-input'}),
+        }
 
     def clean_password_confirm(self):
         password = self.cleaned_data.get('password')
         password_confirm = self.cleaned_data.get('password_confirm')
 
-        if password and password_confirm:
-            if password != password_confirm:
-                raise forms.ValidationError('Senhas não são iguais')
-            else:
-                return password_confirm
+        if password and password_confirm and password != password_confirm:
+            raise forms.ValidationError('Senhas não são iguais')
+
+        return password_confirm
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        user.is_staff = 1
+        if commit:
+            user.save()
+        return user
+
+class RegisterForms(forms.Form):
+    email = forms.EmailField(
+        label='Email',
+        required=True,
+        max_length=100,
+        widget=forms.EmailInput(attrs={'type': 'email'}),
+    )
+    username = forms.CharField(
+        label='Username',
+        required=True,
+        max_length=30,
+        widget=forms.TextInput(attrs={'type': 'text'}),
+    )
+    password = forms.CharField(
+        label='Senha',
+        required=True,
+        max_length=100,
+        widget=forms.PasswordInput(attrs={'type': 'password'}),
+    )
+    password_confirm = forms.CharField(
+        label='Confirmar Senha',
+        required=True,
+        max_length=100,
+        widget=forms.PasswordInput(attrs={'type': 'password'}),
+    )
+
+
+    def clean_password_confirm(self):
+        password = self.cleaned_data.get('password')
+        password_confirm = self.cleaned_data.get('password_confirm')
+
+        if password and password_confirm and password != password_confirm:
+            raise forms.ValidationError('Senhas não são iguais')
+
+        return password_confirm

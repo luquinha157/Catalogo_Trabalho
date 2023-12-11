@@ -63,56 +63,61 @@ https://templatemo.com/tm-556-catalog-z
             </div>
         </div>
     </nav>
-    <!--modal-login-->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content"><br>
-                    <div class="modal-header">
-                        <a class="navbar-brand" href="#">
-                            <h2 style="font-family: serif; color: #FFFFF5;">Login</h2>
-                        </a>
-                    <button class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span class="icon-close">
-                            <ion-icon name="close"></ion-icon>
-                        </span>
-                    </button>
-                </div><br><br>
-            <form method="POST" action="{% url 'login' %}"> 
-            <div class="modal-body">
+   <!--modal-login-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <br>
+            <div class="modal-header">
+                <a class="navbar-brand" href="#">
+                    <h2 style="font-family: serif; color: #FFFFF5;">Login</h2>
+                </a>
+                <button class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="icon-close">
+                        <ion-icon name="close"></ion-icon>
+                    </span>
+                </button>
+            </div>
+            <br><br>
+            <form method="POST" action="{% url 'login' %}">
                 {% csrf_token %}
-                <div class="input-box">
-                <span class="icon">
-                        <ion-icon name="mail-outline"></ion-icon>
-                    </span>
-                    {{ user_form.email }}
-                    <label>Email</label>
-                </div><br>
-                <div class="input-box">
-                    <span class="icon">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                    </span>
-                    {{ user_form.senha }}
-                    <label>Senha</label>
+                <div class="modal-body">
+                    <div class="input-box">
+                        <span class="icon">
+                            <ion-icon name="mail-outline"></ion-icon>
+                        </span>
+                        {{ user_form.email }}
+                        <label>Email</label>
+                    </div><br>
+                    <div class="input-box">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        {{ user_form.senha }}
+                        <label>Senha</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <label><input type="checkbox">Lembre de mim</label>
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModalSenha" data-bs-dismiss="modal"> Esqueceu a senha?</a>
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModalRegister" data-bs-dismiss="modal"> Criar conta</a>
+                    </div>
                 </div>
-                <div class="remember-forgot">
-                    <label><input type="checkbox">Lembre de mim</label>
-                    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModalSenha" data-bs-dismiss="modal"> Esqueceu a senha?</a>
-                    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModalRegister" data-bs-dismiss="modal"> Criar conta</a>
+                <div class="footer-modal">
+                    <button class="btn-cancelar" data-bs-dismiss="modal">
+                        <a class="nav-link" aria-current="page">Cancelar</a>
+                    </button>
+                    <button type="submit" class="btn-entrar">
+                        <a class="nav-link" aria-current="page">Entrar</a>
+                    </button>
                 </div>
-            </div>
-            <div class="footer-modal">
-                <button class="btn-cancelar" data-bs-dismiss="modal">
-                    <a class="nav-link" aria-current="page">Cancelar</a>
-                </button>
-                <button type="submit" class="btn-entrar">
-                <a class="nav-link" aria-current="page">Entrar</a>
-                </button>
-            </div>
             </form>
         </div>
-        </div>
-        </div>
-        <!--modal-login-->
+    </div>
+</div>
+<!--modal-login-->
+
+
+        
     <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="{% static 'assets/img/hero.jpg' %}">
         <form class="d-flex tm-search-form" method="GET" action="{% url 'index' %}">
             <input class="form-control tm-search-input" type="search" name="search" placeholder="Pesquisar" aria-label="Search" value="{{ search_term }}">

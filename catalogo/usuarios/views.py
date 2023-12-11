@@ -1,46 +1,50 @@
 from django.shortcuts import render, redirect
-from usuarios.forms import LoginForms, RegisterForms
-from django.contrib.auth.models import User
-from django.contrib import auth
-from django.contrib import messages
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from usuarios.forms import LoginForms, RegisterForms
 
 @login_required
 def index(request):
     user = User.objects.all()
-    form = RegisterForms()
-    return render(request, 'usuarios/users.html', {'users': user, 'form':form})
+    register_form = RegisterForms()
+    login_form = LoginForms()
+    return render(request, 'jogos/index.html', {'users': user, 'register_form': register_form, 'user_form': login_form})
 
 @login_required
 def dashboard(request):
     return render(request, "dashboard/dashboard.html")
 
-def login(request):
-    form = LoginForms()
+def login(request):  # Renomeie esta função
+    user_form = LoginForms()
 
     if request.method == 'POST':
-        form = LoginForms(request.POST)
+        user_form = LoginForms(request.POST)
 
-        if form.is_valid():
-            email = form['email'].value()
-            password = form['senha'].value()
-        user_temp = User.objects.get(email= email)
+    if user_form.is_valid():
+        email = user_form['email'].value()
+        senha = user_form['senha'].value()
+        user_temp = User.objects.get(email=email)
 
-        user = auth.authenticate(
+        usuario = auth.authenticate(
             request,
-            username=user_temp,
-            password=password
+            username=user_temp.username,
+            password=senha
         )
 
-        if user is not None:
-            auth.login(request, user)
-            messages.success(request, f'Foi logado com sucesso!')
-            return redirect('dashboard')
+        if usuario is not None:
+            auth.login(request, usuario)
+            messages.success(request, 'Foi logado com sucesso!')
+            if usuario.is_staff:
+                return redirect('dashboard')
+            else:
+                return redirect('index')
         else:
             messages.error(request, 'Erro ao efetuar login')
-            return redirect('login')
+            return redirect('index')
 
-    return render(request, 'usuarios/login.html', {'form': form})
+    return render(request, 'jogos/index.html', {'user_form': user_form})
+
 
 @login_required
 def register(request):
@@ -48,9 +52,9 @@ def register(request):
         form = RegisterForms(request.POST)
 
         if form.is_valid():
-            name=form['name'].value()
-            email=form['email'].value()
-            password=form['password'].value()
+            name = form['name'].value()
+            email = form['email'].value()
+            password = form['password'].value()
 
             if User.objects.filter(username=name).exists():
                 messages.error(request, 'Usuário já existente')
