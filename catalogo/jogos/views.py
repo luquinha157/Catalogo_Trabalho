@@ -11,6 +11,8 @@ from usuarios.forms import LoginForms, RegisterForms
 
 def index(request):
     produtos = Jogo.objects.all()
+    # Criar uma instância do formulário JogoForm
+    jogo_form = JogoForm()
     
     # Se houver um termo de pesquisa na solicitação GET
     search_term = request.GET.get('search', '')
@@ -36,16 +38,32 @@ def index(request):
         # Se a página solicitada estiver fora do intervalo, exibe a última página disponível
         produtos_paginados = paginator.page(paginator.num_pages)
 
-    return render(request, 'jogos/index.html', {'produtos': produtos_paginados })
+    return render(request, 'jogos/index.html', {'produtos': produtos_paginados, 'form': jogo_form })
 
 # CRUD
+def listar_produtos(request):
+    # Obtém o parâmetro de ID da solicitação GET
+    produto_id = request.GET.get('id')
+
+    # Se um ID foi fornecido, filtra o produto pelo ID
+    if produto_id:
+        produto = get_object_or_404(Jogo, id=produto_id)
+        # Retorna apenas o produto específico
+        return render(request, 'listar_produtos.html', {'produto': produto, 'quantidade_produtos': Jogo.objects.count()})
+    else:
+ # Se nenhum ID foi fornecido, lista todos os produtos
+        produtos = Jogo.objects.all()
+        return render(request, 'listar_produtos.html', {'produtos': produtos, 'quantidade_produtos': Jogo.objects.count()})
+
 
 @login_required
 def index(request):
     user = User.objects.all()
     register_form = RegisterForms()
     login_form = LoginForms()
-    return render(request, 'jogos/index.html', {'users': user, 'register_form': register_form, 'user_form': login_form})
+        # Criar uma instância do formulário JogoForm
+    jogo_form = JogoForm()
+    return render(request, 'jogos/index.html', {'users': user, 'register_form': register_form, 'user_form': login_form, 'form': jogo_form})
 
 @login_required
 def dashboard(request):
@@ -53,6 +71,33 @@ def dashboard(request):
 
 def login(request):  # Renomeie esta função
     user_form = LoginForms()
+    produtos = Jogo.objects.all()
+        # Criar uma instância do formulário JogoForm
+    jogo_form = JogoForm()
+    
+    # Se houver um termo de pesquisa na solicitação GET
+    search_term = request.GET.get('search', '')
+    
+    # Se houver um termo de pesquisa, filtra os produtos
+    if search_term:
+        produtos = Jogo.objects.filter(nome__icontains=search_term)
+    else:
+        produtos = Jogo.objects.all()
+
+    # Número de itens por página
+    items_por_pagina = 8  # Altere conforme necessário
+
+    # Obtém o número da página a partir dos parâmetros da solicitação
+    page = request.GET.get('page', 1)
+
+    # Cria um objeto Paginator
+    paginator = Paginator(produtos, items_por_pagina)
+
+    try:
+        produtos_paginados = paginator.page(page)
+    except EmptyPage:
+        # Se a página solicitada estiver fora do intervalo, exibe a última página disponível
+        produtos_paginados = paginator.page(paginator.num_pages)
 
     if request.method == 'POST':
         user_form = LoginForms(request.POST)
@@ -79,7 +124,7 @@ def login(request):  # Renomeie esta função
             messages.error(request, 'Erro ao efetuar login')
             return redirect('index')
 
-    return render(request, 'jogos/index.html', {'user_form': user_form})
+    return render(request, 'jogos/index.html', {'user_form': user_form, 'form': jogo_form, 'produtos':produtos_paginados})
 
 
 @login_required

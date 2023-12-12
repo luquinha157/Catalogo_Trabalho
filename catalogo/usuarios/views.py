@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from jogos.models import Jogo
+from jogos.forms import JogoForm
+from django.core.paginator import Paginator, EmptyPage
 from usuarios.forms import LoginForms, RegisterForms
 
 @login_required
@@ -9,7 +12,36 @@ def index(request):
     user = User.objects.all()
     register_form = RegisterForms()
     login_form = LoginForms()
-    return render(request, 'jogos/index.html', {'users': user, 'register_form': register_form, 'user_form': login_form})
+    # Criar uma instância do formulário JogoForm
+    jogo_form = JogoForm()
+
+    # Obter todos os produtos
+    produtos = Jogo.objects.all()
+
+    # Filtrar por termo de pesquisa, se fornecido
+    search_term = request.GET.get('search', '')
+    
+    if search_term:
+        produtos = Jogo.objects.filter(nome__icontains=search_term)
+    else:
+        produtos = Jogo.objects.all()
+
+    # Número de itens por página
+    items_por_pagina = 8
+
+    # Obter o número da página a partir dos parâmetros da solicitação
+    page = request.GET.get('page', 1)
+
+    # Criar um objeto Paginator
+    paginator = Paginator(produtos, items_por_pagina)
+
+    try:
+        produtos_paginados = paginator.page(page)
+    except EmptyPage:
+        # Se a página solicitada estiver fora do intervalo, exibir a última página disponível
+        produtos_paginados = paginator.page(paginator.num_pages)
+
+    return render(request, 'jogos/index.html', {'users': user, 'register_form': register_form, 'user_form': login_form, 'form': jogo_form, 'produtos_paginados': produtos_paginados, 'search_term': search_term})
 
 @login_required
 def dashboard(request):
@@ -17,6 +49,38 @@ def dashboard(request):
 
 def login(request):  # Renomeie esta função
     user_form = LoginForms()
+    produtos = Jogo.objects.all()
+    # Criar uma instância do formulário JogoForm
+    jogo_form = JogoForm()
+    
+    # Se houver um termo de pesquisa na solicitação GET
+    search_term = request.GET.get('search', '')
+    
+    if search_term:
+        produtos = Jogo.objects.filter(nome__icontains=search_term)
+    else:
+        produtos = Jogo.objects.all()
+    
+    # Se houver um termo de pesquisa, filtra os produtos
+    if search_term:
+        produtos = Jogo.objects.filter(nome__icontains=search_term)
+    else:
+        produtos = Jogo.objects.all()
+
+    # Número de itens por página
+    items_por_pagina = 8  # Altere conforme necessário
+
+    # Obtém o número da página a partir dos parâmetros da solicitação
+    page = request.GET.get('page', 1)
+
+    # Cria um objeto Paginator
+    paginator = Paginator(produtos, items_por_pagina)
+
+    try:
+        produtos_paginados = paginator.page(page)
+    except EmptyPage:
+        # Se a página solicitada estiver fora do intervalo, exibe a última página disponível
+        produtos_paginados = paginator.page(paginator.num_pages)
 
     if request.method == 'POST':
         user_form = LoginForms(request.POST)
@@ -43,7 +107,7 @@ def login(request):  # Renomeie esta função
             messages.error(request, 'Erro ao efetuar login')
             return redirect('index')
 
-    return render(request, 'jogos/index.html', {'user_form': user_form})
+    return render(request, 'jogos/index.html', {'user_form': user_form, 'produtos':produtos_paginados, 'form': jogo_form, 'search_term': search_term})
 
 
 @login_required
