@@ -2,21 +2,21 @@
 {% load static %}
 {% block content %}
 <div class="main">
-  <form method="POST" action="{% url 'update' fotos.id %}" enctype="multipart/form-data" class="custom-form">
+  <form method="POST" action="{% url 'update' produtos.id %}" enctype="multipart/form-data" class="custom-form">
       {% csrf_token %}
       <div class="form-group">
-          <label for="id_titulo">Titulo:</label>
-          <input type="text" name="titulo" class="custom-input" maxlength="25" required="" id="id_titulo" value="{{fotos.titulo}}">
+          <label for="id_titulo">Nome:</label>
+          <input type="text" name="titulo" class="custom-input" maxlength="25" required="" id="id_titulo" value="{{jogo.nome}}">
       </div>
       <div class="form-group">
           <label for="id_descricao">Descricao:</label>
-          <textarea name="descricao" cols="40" rows="10" class="custom-textarea" maxlength="255" required="" id="id_descricao" value="{{fotos.descricao}}"></textarea>
+          <textarea name="descricao" cols="40" rows="10" class="custom-textarea" maxlength="255" required="" id="id_descricao" value="{{jogo.descricao}}"></textarea>
       </div>
       <div class="form-group">
-          <label for="id_foto">Foto:</label>
-          <input type="file" name="foto" class="custom-file-input" accept="image/*" required="" id="id_foto" value="{{fotos.foto}}">
+          <label for="id_foto">Imagem:</label>
+          <input type="file" name="foto" class="custom-file-input" accept="image/*" required="" id="id_foto" value="{{jogo.imagem}}">
       </div>
-      <button type="submit" class="custom-button">Editar Foto</button>
+      <button type="submit" class="custom-button">Editar Jogo</button>
   </form>
 </div>
 {% endblock %}

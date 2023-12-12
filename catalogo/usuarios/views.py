@@ -88,13 +88,13 @@ def update(request, id):
     produtos.descricao = request.POST['descricao']
     produtos.imagem = request.FILES['imagem']
     produtos.save()
-    return redirect('listarFotos')
+    return redirect('listarJogos')
 
 @login_required
 def delete(request, id):
     produtos = Jogo.objects.get(pk=id)
     produtos.delete()
-    return redirect('listarFotos')
+    return redirect('consulta_jogos')
 
 
 def login(request):  # Renomeie esta função

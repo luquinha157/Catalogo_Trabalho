@@ -55,9 +55,38 @@ def add_jogos(request):
     return render(request, 'usuarios/login.html', {'form': JogoForm})
 
 @login_required
+def listarJogos(request):
+    search_query = request.GET.get('search')
+    if search_query:
+        produtos = Jogo.objects.filter(Q(titulo__icontains=search_query) | Q(autor__username__icontains=search_query))
+    else:
+        produtos = Jogo.objects.all()
+    return render(request,"usuarios/users.html",{"produtos":produtos})
+
+@login_required
 def consulta_jogos(request):
     produtos = Jogo.objects.all()
     return render(request, 'usuarios/users.html', {'produtos':produtos})
+
+@login_required
+def edit(request, id):
+    produtos = Jogo.objects.get(pk=id)
+    return render(request, "usuarios/create_user.html",{'produtos':produtos})
+
+@login_required
+def update(request, id):
+    produtos = Jogo.objects.get(pk=id)
+    produtos.nome = request.POST['nome']
+    produtos.descricao = request.POST['descricao']
+    produtos.imagem = request.FILES['imagem']
+    produtos.save()
+    return redirect('listarJogos')
+
+@login_required
+def delete(request, id):
+    produtos = Jogo.objects.get(pk=id)
+    produtos.delete()
+    return redirect('index')
 
 @login_required
 def index(request):

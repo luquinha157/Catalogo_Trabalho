@@ -11,4 +11,7 @@ urlpatterns = [
     path('dashboard', dashboard, name="dashboard"),
     path('add_jogos', add_jogos, name="add_jogos"),
     path('consulta_jogos', consulta_jogos, name='consulta_jogos'),
+    path('edit/<int:id>', edit, name="edit"),
+    path('update/<int:id>', update, name="update"),
+    path('delete/<int:id>', delete, name="delete"),
 ]
