@@ -55,6 +55,11 @@ def add_jogos(request):
     return render(request, 'usuarios/login.html', {'form': JogoForm})
 
 @login_required
+def consulta_jogos(request):
+    produtos = Jogo.objects.all()
+    return render(request, 'usuarios/users.html', {'produtos':produtos})
+
+@login_required
 def index(request):
     user = User.objects.all()
     register_form = RegisterForms()
