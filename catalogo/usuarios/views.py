@@ -45,7 +45,27 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    return render(request, "dashboard/dashboard.html")
+    produtos = Jogo.objects.all()
+    return render(request, "dashboard/dashboard.html", {'produtos': produtos })
+
+@login_required
+def add_jogos(request):
+    if request.method == 'POST':
+        form = JogoForm(request.POST, request.FILES)
+        if form.is_valid():
+            jogo = form.save(commit=False)
+            jogo.save()
+            return redirect('add_jogos')
+    else:
+        form = JogoForm()
+
+    return render(request, 'usuarios/login.html', {'form': JogoForm})
+
+@login_required
+def consulta_fotos(request):
+    produtos = Jogo.objects.all()
+    return render(request, 'usuarios/users.html', {'produtos':produtos})
+
 
 def login(request):  # Renomeie esta função
     user_form = LoginForms()

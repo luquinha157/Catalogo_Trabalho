@@ -1,87 +1,31 @@
 {% extends "dashboard/layouts/layout.html" %}
 {% load static %}
 {% block content %}
-    <div class="py-5 text-center">
-        <h2>Usuários</h2>
-      </div>
-      <div class="container">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cadastrar_usuario">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
-                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                    <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
-                  </svg>
-            </button>
-            
-            <!-- Modal -->
-            <div class="modal fade" id="cadastrar_usuario" tabindex="-1" aria-labelledby="cadastrar_usuarioLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="cadastrar_usuarioLabel">Cadastrar usuário</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{% url 'cadastro' %}" method="post">
-                            {% csrf_token %}
-                            {% for field in form.visible_fields %}
-                            <div class="col-12 col-lg-12" style="margin-bottom: 10px;">
-                                <label for="{{ field.id_for_label }}" style="color:#000; margin-bottom: 5px;">{{field.label}}</label>
-                                {{ field }}
+<div class="main">
+    <div class="photo-list">
+        <h2>Fotos</h2>
+        <div style="--bs-gutter-x: 1.5rem;--bs-gutter-y: 0;display: flex;flex-wrap: wrap;margin-top: calc(var(--bs-gutter-y) * -1);margin-right: calc(var(--bs-gutter-x)/ -2);margin-left: calc(var(--bs-gutter-x)/ -2);">
+            {% for jogo in produtos %}
+                <div style="flex-shrink: 0;width: 30%;max-width: 100%;padding-right: calc(var(--bs-gutter-x)/ 2);padding-left: calc(var(--bs-gutter-x)/ 2);margin-top: var(--bs-gutter-y);">
+                    <div style="position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: 0.25rem;margin-bottom: 1.5rem!important;">
+                        <img src="{{ jogo.imagem.url }}" style="width: 100%;border-top-left-radius: calc(0.25rem - 1px);border-top-right-radius: calc(0.25rem - 1px);" alt="{{ foto.titulo }}">
+                        <div style="flex: 1 1 auto; padding: 1rem 1rem;">
+                            <h5 style="margin-bottom: 0.5rem;">{{ jogo.nome }}</h5>
+                            <p style="margin-top: 0;margin-bottom: 1rem;">Descrição: {{ jogo.descricao }}</p>
+                            <hr>
+                            <div style="text-decoration: none;">
+                                 <a href="{% url 'edit' joog.id %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="background-color: orange; border-radius:5px;" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </a>
+                                <a href="{% url 'delete' jogo.id %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="background-color: red; border-radius:5px;" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </a>
                             </div>
-                            {% for error in field.errors %}
-                            <div class="alert alert-danger">
-                                {{error}}
-                            </div>
-                            {% endfor %}
-                            {% endfor %}
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Cadastrar usuario</button>
-                    </form>
+                        </div>
                     </div>
                 </div>
-                </div>
-            </div>
-        <div class="row">
-            <div class="col"><b>Nome</b></div>
-            <div class="col"><b>Status</b></div>
-            <div class="col"><b>Permissão</b></div>
-            <div class="col"><b>Opções</b></div>
-        </div>
-    {% for user in users %}
-    <div class="row">
-        <div class="col-3">{{user.username}} </div>
-        <div class="col-3">
-            {%if user.is_active%}
-                Ativo
-            {% else %} 
-                Inativo
-            {% endif %}
-        </div>
-        <div class="col-3">
-            {%if user.is_superuser%}
-                Admin
-            {% else %} 
-                User
-            {% endif %}
-        </div>
-        <div class="col-3">
-            <a href="{% url 'active_user' user.id %}" style="text-decoration:none;color:green">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                  </svg>
-            </a>
-            <a href="{% url 'inative_user' user.id %}" style="text-decoration:none;color:red">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
-                  </svg>
-            </a>
-            
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
-</div>
 </div>
 {% endblock %}

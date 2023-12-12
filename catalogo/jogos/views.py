@@ -41,20 +41,18 @@ def index(request):
     return render(request, 'jogos/index.html', {'produtos': produtos_paginados, 'form': jogo_form })
 
 # CRUD
-def listar_produtos(request):
-    # Obtém o parâmetro de ID da solicitação GET
-    produto_id = request.GET.get('id')
-
-    # Se um ID foi fornecido, filtra o produto pelo ID
-    if produto_id:
-        produto = get_object_or_404(Jogo, id=produto_id)
-        # Retorna apenas o produto específico
-        return render(request, 'listar_produtos.html', {'produto': produto, 'quantidade_produtos': Jogo.objects.count()})
+@login_required
+def add_jogos(request):
+    if request.method == 'POST':
+        form = JogoForm(request.POST, request.FILES)
+        if form.is_valid():
+            jogo = form.save(commit=False)
+            jogo.save()
+            return redirect('add_jogos')
     else:
- # Se nenhum ID foi fornecido, lista todos os produtos
-        produtos = Jogo.objects.all()
-        return render(request, 'listar_produtos.html', {'produtos': produtos, 'quantidade_produtos': Jogo.objects.count()})
+        form = JogoForm()
 
+    return render(request, 'usuarios/login.html', {'form': JogoForm})
 
 @login_required
 def index(request):

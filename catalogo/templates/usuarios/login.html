@@ -1,96 +1,28 @@
-{% extends "../jogos/layouts/layout.html" %}
+{% extends "dashboard/layouts/layout.html" %}
 {% load static %}
 {% block content %}
 
-{% include "partials/guest/header.html" %} 
+<div class="main">
+  <form method="post" enctype="multipart/form-data" class="custom-form">
+    {% csrf_token %}
 
-  <main id="main" data-aos="fade" data-aos-delay="1500">
+    <div class="form-group">
+      <label for="{{ form.nome.id_for_label }}" class="form-label">{{ form.nome.label }}</label>
+      {{ form.nome }}
+    </div>
 
-    <!-- ======= End Page Header ======= -->
-    <div class="page-header d-flex align-items-center">
-      <div class="container position-relative">
-        <div class="row d-flex justify-content-center">
-          <div class="col-lg-6 text-center">
-            <h2>Login</h2>
-            <p>Para adicionar itens em nosso catalogo você deve realizar o login utilizando email e senha cadastrado. Caso não tenha cadastro entre em contato ou va na nossa empresa nos seguintes endereços abaixo:</p>
+    <div class="form-group">
+      <label for="{{ form.descricao.id_for_label }}" class="form-label">{{ form.descricao.label }}</label>
+      {{ form.descricao }}
+    </div>
 
-          </div>
-        </div>
-      </div>
-    </div><!-- End Page Header -->
+    <div class="form-group">
+      <label for="{{ form.imagem.id_for_label }}" class="form-label">{{ form.imagem.label }}</label>
+      {{ form.imagem }}
+    </div>
 
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-
-        <div class="row gy-4 justify-content-center">
-
-          <div class="col-lg-3">
-            <div class="info-item d-flex">
-              <i class="bi bi-geo-alt flex-shrink-0"></i>
-              <div>
-                <h4>Endereço:</h4>
-                <p>Escola Sesi/Senai rua A, sem numero</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
-
-          <div class="col-lg-3">
-            <div class="info-item d-flex">
-              <i class="bi bi-envelope flex-shrink-0"></i>
-              <div>
-                <h4>Email:</h4>
-                <p>nascimento@django.com</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
-
-          <div class="col-lg-3">
-            <div class="info-item d-flex">
-              <i class="bi bi-phone flex-shrink-0"></i>
-              <div>
-                <h4>telefone:</h4>
-                <p>+32 9-998729-3456</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
-
-        </div>
-
-        <div class="row justify-content-center mt-4">
-
-          <div class="col-lg-9">
-            <form action="{% url 'login' %}" method="post">
-              {% csrf_token %}
-              <div class="row">
-                {% for field in form.visible_fields %}
-                  <div class="col-md-12 form-group">
-                    <label for="{{ field.id_for_label }}" style="color:#fff; margin-bottom: 5px;">{{field.label}}</label>
-                      {{ field }}
-                  </div>
-                {% endfor %}
-              </div>
-              <div class="my-3">
-                
-              </div>
-              <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="submit">Entrar</button>
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
-
-        </div>
-
-      </div>
-    </section><!-- End Contact Section -->
-
-  </main><!-- End #main -->
-
- 
-  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <div id="preloader">
-    <div class="line"></div>
-  </div>
+    <button type="submit" class="custom-button">Adicionar Jogo</button>
+  </form>
+</div>
 
 {% endblock %}
