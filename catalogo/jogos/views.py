@@ -104,11 +104,16 @@ def dashboard(request):
 def login(request):  # Renomeie esta função
     user_form = LoginForms()
     produtos = Jogo.objects.all()
-        # Criar uma instância do formulário JogoForm
+    # Criar uma instância do formulário JogoForm
     jogo_form = JogoForm()
     
     # Se houver um termo de pesquisa na solicitação GET
     search_term = request.GET.get('search', '')
+    
+    if search_term:
+        produtos = Jogo.objects.filter(nome__icontains=search_term)
+    else:
+        produtos = Jogo.objects.all()
     
     # Se houver um termo de pesquisa, filtra os produtos
     if search_term:
@@ -156,7 +161,7 @@ def login(request):  # Renomeie esta função
             messages.error(request, 'Erro ao efetuar login')
             return redirect('index')
 
-    return render(request, 'jogos/index.html', {'user_form': user_form, 'form': jogo_form, 'produtos':produtos_paginados})
+    return render(request, 'jogos/index.html', {'user_form': user_form, 'produtos':produtos_paginados, 'form': jogo_form, 'search_term': search_term})
 
 
 @login_required

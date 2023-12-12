@@ -6,7 +6,7 @@
       {% csrf_token %}
       <div class="form-group">
           <label for="id_titulo">Nome:</label>
-          <input type="text" name="titulo" class="custom-input" maxlength="25" required="" id="id_titulo" value="{{jogo.nome}}">
+          <input type="text" name="titulo" class="custom-input" maxlength="25" required="" id="id_nome" value="{{jogo.nome}}">
       </div>
       <div class="form-group">
           <label for="id_descricao">Descricao:</label>
@@ -14,7 +14,7 @@
       </div>
       <div class="form-group">
           <label for="id_foto">Imagem:</label>
-          <input type="file" name="foto" class="custom-file-input" accept="image/*" required="" id="id_foto" value="{{jogo.imagem}}">
+          <input type="file" name="foto" class="custom-file-input" accept="media/*" required="" id="id_foto" value="{{jogo.imagem}}">
       </div>
       <button type="submit" class="custom-button">Editar Jogo</button>
   </form>
